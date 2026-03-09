@@ -36,7 +36,7 @@ class _ChatTabState extends State<ChatTab> {
         return Column(
           children: [
             _buildHeader(context, provider, recentItems),
-            _buildMessageList(provider, messages),
+            _buildMessageList(context, provider, messages),
             _buildInputArea(context, provider),
           ],
         );
@@ -90,7 +90,6 @@ class _ChatTabState extends State<ChatTab> {
               itemBuilder: (context, index) {
                 final item = recentItems[index];
                 final isActive = provider.currentChatAgent?.id == (item is AgentModel ? item.id : '');
-                
                 return GestureDetector(
                   onTap: () {
                     if (item is AgentModel) {
@@ -117,18 +116,14 @@ class _ChatTabState extends State<ChatTab> {
       height: 44,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        border: isActive
-            ? Border.all(color: const Color(0xFFEF4444), width: 2)
-            : null,
-        boxShadow: isActive
-            ? [
-                BoxShadow(
-                  color: const Color(0xFFEF4444).withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ]
-            : null,
+        border: isActive ? Border.all(color: const Color(0xFFEF4444), width: 2) : null,
+        boxShadow: isActive ? [
+          BoxShadow(
+            color: const Color(0xFFEF4444).withOpacity(0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ] : null,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
@@ -154,14 +149,10 @@ class _ChatTabState extends State<ChatTab> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: provider.isConnected
-            ? Colors.green.withOpacity(0.1)
-            : Colors.grey.withOpacity(0.1),
+        color: provider.isConnected ? Colors.green.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: provider.isConnected
-              ? Colors.green.withOpacity(0.3)
-              : Colors.grey.withOpacity(0.3),
+          color: provider.isConnected ? Colors.green.withOpacity(0.3) : Colors.grey.withOpacity(0.3),
         ),
       ),
       child: Row(
@@ -190,7 +181,7 @@ class _ChatTabState extends State<ChatTab> {
     );
   }
 
-  Widget _buildMessageList(AppProvider provider, List<MessageModel> messages) {
+  Widget _buildMessageList(BuildContext context, AppProvider provider, List<MessageModel> messages) {
     return Expanded(
       child: provider.currentChatAgent == null
           ? _buildEmptyState()
@@ -202,7 +193,7 @@ class _ChatTabState extends State<ChatTab> {
                 if (index == messages.length && provider.isTyping) {
                   return _buildTypingIndicator();
                 }
-                return _buildMessage(messages[index]);
+                return _buildMessage(context, messages[index]);
               },
             ),
     );
@@ -248,24 +239,205 @@ class _ChatTabState extends State<ChatTab> {
     );
   }
 
-  Widget _buildMessage(MessageModel msg) {
+  Widget _buildMessage(BuildContext context, MessageModel msg) {
     final isUser = msg.role == 'user';
-    
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
-          _buildMessageBubble(msg, isUser),
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.75,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: isUser ? Colors.grey[900] : const Color(0xFFF9FAFB),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.03),
+ 
+                  blurRadius: 5,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Text(
+              msg.content,
+              style: TextStyle(
+                fontSize: 13,
+                color: isUser ? Colors.white : Colors.grey[800],
+                fontWeight: isUser ? FontWeight.w600 : FontWeight.w500,
+                height: 1.4,
+              ),
+            ),
+          ),
           if (msg.attachment != null && msg.attachment!.type == 'image')
-            _buildImageAttachment(msg.attachment!.url),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: Colors.grey[100]!),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: CachedNetworkImage(
+                    imageUrl: msg.attachment!.url,
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    height: 160,
+                    fit: BoxFit.cover,
+                    placeholder: (_, __) => Container(
+                      height: 160,
+                      color: Colors.grey[200],
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (_, __, ___) => Container(
+                      height: 160,
+                      color: Colors.grey[200],
+                      child: const Icon(Icons.error),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           if (msg.tableData != null)
-            _buildTableAttachment(msg.tableData!),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[900],
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: msg.tableData!.map((row) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            row.item,
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.white.withOpacity(0.5),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            row.value,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
         ],
       ),
     );
   }
 
-  Widget _buildMessageBubble(MessageModel msg, bool isUser) {
+  Widget _buildInputArea(BuildContext context, AppProvider provider) {
     return Container(
-   
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 12,
+        bottom: MediaQuery.of(context).padding.bottom + 12,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 20,
+            offset: const Offset(0, -5),
+          ),
+        ],
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF9FAFB),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Colors.grey[100]!),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _controller,
+                onChanged: (v) => provider.setInputText(v),
+                onSubmitted: (_) => _sendMessage(provider),
+                decoration: const InputDecoration(
+                  hintText: '输入指令...',
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  border: InputBorder.none,
+                ),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () => _sendMessage(provider),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: provider.inputText.trim().isNotEmpty
+                      ? const Color(0xFFEF4444)
+                      : Colors.grey[200],
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: provider.inputText.trim().isNotEmpty
+                      ? [
+                          BoxShadow(
+                            color: const Color(0xFFEF4444).withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : null,
+                ),
+                child: Icon(
+                  Icons.arrow_upward,
+                  color: provider.inputText.trim().isNotEmpty
+                      ? Colors.white
+                      : Colors.grey[400],
+                  size: 20,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _sendMessage(AppProvider provider) {
+    if (provider.inputText.trim().isEmpty) return;
+    provider.sendMessage(_controller.text);
+    _controller.clear();
+  }
+}
