@@ -42,16 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ProfileTab(),
                 ],
               ),
+
               // Agent详情页
               if (provider.selectedAgent != null)
                 AgentDetailPage(agent: provider.selectedAgent!),
-              // Skill详情页（已移除）
-              // if (provider.selectedSkill != null)
-              //   SkillDetailPage(skill: provider.selectedSkill!),
-
-              //   SkillDetailPage(skill: provider.selectedSkill!),
-              if (provider.selectedSkill != null)
-                SkillDetailPage(skill: provider.selectedSkill!),
+              // Skill详情页已移除
             ],
           ),
           bottomNavigationBar: _buildBottomNav(provider),

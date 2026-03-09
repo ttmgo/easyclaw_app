@@ -25,15 +25,8 @@ class _ChatTabState extends State<ChatTab> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
-      builder: (context, provider, child) {
-        final messages = provider.currentAgentMessages;
+
         final recentItems = [
-          ...provider.discoverAgents,
-          ...provider.skillTools.take(1),
-        ];
-          ...provider.discoverAgents,
-          ...provider.skillTools.take(1),
-        ];
           ...provider.discoverAgents,
           ...provider.skillTools.take(1),
         ];
