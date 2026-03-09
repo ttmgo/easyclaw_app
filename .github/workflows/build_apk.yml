@@ -27,6 +27,13 @@ jobs:
         channel: 'stable'
         cache: true
         
+    - name: Fix Gradle properties
+      run: |
+        # Remove Windows-specific Java home from gradle.properties
+        sed -i '/org.gradle.java.home/d' android/gradle.properties
+        echo "Fixed gradle.properties:"
+        cat android/gradle.properties
+        
     - name: Get dependencies
       run: flutter pub get
       
