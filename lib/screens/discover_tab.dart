@@ -97,7 +97,7 @@ class _AgentCard extends StatelessWidget {
           border: Border.all(color: Colors.grey[100]!),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
+              color: Colors.black.withOpacity( 0.03),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -128,7 +128,7 @@ class _AgentCard extends StatelessWidget {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Colors.black.withValues(alpha: 0.3),
+                            Colors.black.withOpacity( 0.3),
                             Colors.transparent,
                           ],
                         ),

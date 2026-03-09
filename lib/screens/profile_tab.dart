@@ -48,7 +48,7 @@ class ProfileTab extends StatelessWidget {
                     borderRadius: BorderRadius.circular(32),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.3),
+                        color: Colors.black.withOpacity( 0.3),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       ),
@@ -62,7 +62,7 @@ class ProfileTab extends StatelessWidget {
                             width: 64,
                             height: 64,
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.1),
+                              color: Colors.white.withOpacity( 0.1),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: const Icon(
@@ -92,10 +92,10 @@ class ProfileTab extends StatelessWidget {
                                     vertical: 4,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.green.withValues(alpha: 0.2),
+                                    color: Colors.green.withOpacity( 0.2),
                                     borderRadius: BorderRadius.circular(6),
                                     border: Border.all(
-                                      color: Colors.green.withValues(alpha: 0.3),
+                                      color: Colors.green.withOpacity( 0.3),
                                     ),
                                   ),
                                   child: Row(
@@ -192,8 +192,8 @@ class ProfileTab extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                   color: provider.isConnected
-                      ? Colors.green.withValues(alpha: 0.1)
-                      : Colors.grey.withValues(alpha: 0.1),
+                      ? Colors.green.withOpacity( 0.1)
+                      : Colors.grey.withOpacity( 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -230,7 +230,7 @@ class ProfileTab extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFEF4444).withValues(alpha: 0.3),
+              color: const Color(0xFFEF4444).withOpacity( 0.3),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -265,7 +265,7 @@ class ProfileTab extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: Colors.blue.withValues(alpha: 0.1),
+                color: Colors.blue.withOpacity( 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(Icons.computer, size: 20, color: Colors.blue),
@@ -298,7 +298,7 @@ class ProfileTab extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: Colors.red.withValues(alpha: 0.1),
+                  color: Colors.red.withOpacity( 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(

@@ -6,7 +6,7 @@ import 'discover_tab.dart';
 import 'skills_tab.dart';
 import 'profile_tab.dart';
 import 'agent_detail_page.dart';
-import 'skill_detail_page.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -45,7 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
               // Agent详情页
               if (provider.selectedAgent != null)
                 AgentDetailPage(agent: provider.selectedAgent!),
-              // Skill详情页
+              // Skill详情页（已移除）
+              // if (provider.selectedSkill != null)
+              //   SkillDetailPage(skill: provider.selectedSkill!),
               if (provider.selectedSkill != null)
                 SkillDetailPage(skill: provider.selectedSkill!),
             ],
@@ -77,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity( 0.05),
             blurRadius: 20,
             offset: const Offset(0, -5),
           ),
@@ -132,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? const Color(0xFFEF4444).withValues(alpha: 0.1) : Colors.transparent,
+          color: isActive ? const Color(0xFFEF4444).withOpacity( 0.1) : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(

@@ -15,7 +15,7 @@ class AgentDetailPage extends StatelessWidget {
       child: GestureDetector(
         onTap: () => context.read<AppProvider>().setSelectedAgent(null),
         child: Container(
-          color: Colors.black.withValues(alpha: 0.3),
+          color: Colors.black.withOpacity( 0.3),
           child: DraggableScrollableSheet(
             initialChildSize: 1,
             minChildSize: 0.5,
@@ -56,7 +56,7 @@ class AgentDetailPage extends StatelessWidget {
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                     colors: [
-                                      Colors.black.withValues(alpha: 0.3),
+                                      Colors.black.withOpacity( 0.3),
                                       Colors.transparent,
                                       Colors.white,
                                     ],
@@ -73,10 +73,10 @@ class AgentDetailPage extends StatelessWidget {
                                     width: 40,
                                     height: 40,
                                     decoration: BoxDecoration(
-                                      color: Colors.black.withValues(alpha: 0.4),
+                                      color: Colors.black.withOpacity( 0.4),
                                       shape: BoxShape.circle,
                                       border: Border.all(
-                                        color: Colors.white.withValues(alpha: 0.2),
+                                        color: Colors.white.withOpacity( 0.2),
                                       ),
                                     ),
                                     child: const Icon(
@@ -239,7 +239,7 @@ class AgentDetailPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(24),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFFEF4444).withValues(alpha: 0.4),
+                                color: const Color(0xFFEF4444).withOpacity( 0.4),
                                 blurRadius: 20,
                                 offset: const Offset(0, 8),
                               ),

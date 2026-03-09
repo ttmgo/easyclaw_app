@@ -27,7 +27,10 @@ class _ChatTabState extends State<ChatTab> {
     return Consumer<AppProvider>(
       builder: (context, provider, child) {
         final messages = provider.currentAgentMessages;
-        final recentItems = [
+        final List<dynamic> recentItems = [
+          ...provider.discoverAgents,
+          ...provider.skillTools.take(1),
+        ];
           ...provider.discoverAgents,
           ...provider.skillTools.take(1),
         ];
@@ -46,7 +49,7 @@ class _ChatTabState extends State<ChatTab> {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.03),
+                    color: Colors.black.withOpacity( 0.03),
                     blurRadius: 10,
                     offset: const Offset(0, 5),
                   ),
@@ -104,7 +107,7 @@ class _ChatTabState extends State<ChatTab> {
                                     boxShadow: isActive
                                         ? [
                                             BoxShadow(
-                                              color: const Color(0xFFEF4444).withValues(alpha: 0.3),
+                                              color: const Color(0xFFEF4444).withOpacity( 0.3),
                                               blurRadius: 8,
                                               offset: const Offset(0, 2),
                                             ),
@@ -168,7 +171,7 @@ class _ChatTabState extends State<ChatTab> {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
+                    color: Colors.black.withOpacity( 0.05),
                     blurRadius: 20,
                     offset: const Offset(0, -5),
                   ),
@@ -216,7 +219,7 @@ class _ChatTabState extends State<ChatTab> {
                           boxShadow: provider.inputText.trim().isNotEmpty
                               ? [
                                   BoxShadow(
-                                    color: const Color(0xFFEF4444).withValues(alpha: 0.3),
+                                    color: const Color(0xFFEF4444).withOpacity( 0.3),
                                     blurRadius: 8,
                                     offset: const Offset(0, 2),
                                   ),
@@ -247,13 +250,13 @@ class _ChatTabState extends State<ChatTab> {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: provider.isConnected
-            ? Colors.green.withValues(alpha: 0.1)
-            : Colors.grey.withValues(alpha: 0.1),
+            ? Colors.green.withOpacity( 0.1)
+            : Colors.grey.withOpacity( 0.1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: provider.isConnected
-              ? Colors.green.withValues(alpha: 0.3)
-              : Colors.grey.withValues(alpha: 0.3),
+              ? Colors.green.withOpacity( 0.3)
+              : Colors.grey.withOpacity( 0.3),
         ),
       ),
       child: Row(
@@ -341,7 +344,7 @@ class _ChatTabState extends State<ChatTab> {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.03),
+                  color: Colors.black.withOpacity( 0.03),
                   blurRadius: 5,
                   offset: const Offset(0, 2),
                 ),
@@ -398,7 +401,7 @@ class _ChatTabState extends State<ChatTab> {
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.2),
+                      color: Colors.black.withOpacity( 0.2),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -415,7 +418,7 @@ class _ChatTabState extends State<ChatTab> {
                             row.item,
                             style: TextStyle(
                               fontSize: 11,
-                              color: Colors.white.withValues(alpha: 0.5),
+                              color: Colors.white.withOpacity( 0.5),
                               fontWeight: FontWeight.w700,
                             ),
                           ),
