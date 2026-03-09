@@ -26,12 +26,6 @@ jobs:
         flutter-version: '3.24.3'
         channel: 'stable'
         cache: true
-    - name: Fix Gradle properties
-      run: |
-        # Remove Windows-specific Java home from gradle.properties
-        sed -i '/org.gradle.java.home/d' android/gradle.properties
-        echo "Fixed gradle.properties:"
-        cat android/gradle.properties
         
     - name: Fix Gradle properties
       run: |
@@ -40,13 +34,26 @@ jobs:
         echo "Fixed gradle.properties:"
         cat android/gradle.properties
         
-    - name: Get dependencies
-      run: flutter pub get
+    - name: Fix Flutter code compatibility
+      run: |
+        # Fix withValues -> withOpacity for Flutter 3.24.3
+        find lib -name "*.dart" -type f -exec sed -i 's/\.withValues(alpha:/\.withOpacity(/g' {} \;
+        echo "Fixed withValues -> withOpacity"
+        
+        # Fix missing imports in chat_tab.dart
+        if ! grep -q "import '../models/message_model.dart';" lib/screens/chat_tab.dart; then
+          sed -i "/import 'package:flutter\/material.dart';/a import '../models/message_model.dart';" lib/screens/chat_tab.dart
+          echo "Added MessageModel import to chat_tab.dart"
+        fi
+        
     - name: Get dependencies
       run: flutter pub get
       
+    - name: Analyze code
+      run: flutter analyze || true
+      
     - name: Build Debug APK
-      run: flutter build apk --debug
+      run: flutter build apk --debug || (echo "Build failed, checking errors..." && flutter analyze && exit 1)
       
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
