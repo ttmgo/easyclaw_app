@@ -1,4 +1,0 @@
-              // Agent详情页
-              if (provider.selectedAgent != null)
-                AgentDetailPage(agent: provider.selectedAgent!),
-              // Skill详情页已移除
