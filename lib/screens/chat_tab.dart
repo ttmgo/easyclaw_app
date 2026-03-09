@@ -27,7 +27,10 @@ class _ChatTabState extends State<ChatTab> {
     return Consumer<AppProvider>(
       builder: (context, provider, child) {
         final messages = provider.currentAgentMessages;
-        final List<dynamic> recentItems = [
+        final recentItems = [
+          ...provider.discoverAgents,
+          ...provider.skillTools.take(1),
+        ];
           ...provider.discoverAgents,
           ...provider.skillTools.take(1),
         ];
